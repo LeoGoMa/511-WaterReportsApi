@@ -1,0 +1,23 @@
+meta {
+  name: 03 - Login Invalido (400)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{email}}",
+    "password": "contrasena-incorrecta"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: eq Correo o contrasena incorrectos
+}

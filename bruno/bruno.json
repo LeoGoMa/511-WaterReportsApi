@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Water Reports API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

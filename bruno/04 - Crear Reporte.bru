@@ -1,0 +1,25 @@
+meta {
+  name: 04 - Crear Reporte
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/reports
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "address": "Calle Hidalgo 245, Col. Centro",
+    "description": "Fuga en la banqueta, brota agua constante",
+    "severity": "high",
+    "reporterPhone": "4771234567"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.report.isResolved: eq false
+}

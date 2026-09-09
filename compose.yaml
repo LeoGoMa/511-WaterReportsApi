@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: water-reports-db
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret123
+      - POSTGRES_DB=waterreportsdb
+    volumes:
+      - postgres_data_db:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_db:
