@@ -33,9 +33,9 @@ export class ReportsController {
     return this.reportsService.findAll();
   }
 
-  // Avisa a los usuarios con notificaciones activas; si no hay ninguno, al correo fijo de la cuadrilla.
+  // La cuadrilla siempre recibe el aviso; se suman los usuarios con notificaciones activas.
   private async resolveRecipients(): Promise<string[]> {
     const emails = await this.usersService.findNotificationEmails();
-    return emails.length > 0 ? emails : [envs.MAILER_CREW];
+    return [...new Set([envs.MAILER_CREW, ...emails])];
   }
 }

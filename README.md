@@ -89,10 +89,12 @@ cual de los dos fallo. Ninguna respuesta incluye el campo `password`.
 El enunciado pide avisar a la cuadrilla de mantenimiento, y la entidad `User` tiene el
 campo `isNotificationEnabled`. Por eso el destinatario se resuelve asi:
 
-1. Todos los usuarios con `isNotificationEnabled = true`.
-2. Si no hay ninguno, al correo fijo de la cuadrilla en `MAILER_CREW`.
+1. Siempre al correo de la cuadrilla configurado en `MAILER_CREW`.
+2. Ademas, a todos los usuarios con `isNotificationEnabled = true`.
 
-Asi el aviso funciona desde el primer reporte, aunque todavia no haya usuarios registrados.
+La lista se deduplica, asi que si un usuario registrado tiene el mismo correo que la
+cuadrilla, el aviso le llega una sola vez. De esta forma la cuadrilla recibe el reporte
+aunque no haya ningun usuario registrado.
 
 ## Puesta en marcha
 
