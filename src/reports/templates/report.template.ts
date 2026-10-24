@@ -40,7 +40,7 @@ export function generateReportTemplate(
       <tr>
         <td style="background-color:#0d47a1;padding:20px 24px;">
           <h1 style="margin:0;font-size:20px;color:#ffffff;">Nuevo reporte de fuga de agua</h1>
-            <p style="margin:4px 0 0;font-size:13px;color:#bbdefb;">Cuadrilla de mantenimiento - AguaFix</p>
+            <p style="margin:4px 0 0;font-size:13px;color:#bbdefb;">Cuadrilla de mantenimiento - AguaFixV2</p>
         </td>
       </tr>
       <tr>
