@@ -1,0 +1,17 @@
+.env
+.env.*
+compose.yaml
+node_modules
+dist
+.git
+.gitignore
+.github
+.vscode
+.idea
+bruno
+coverage
+test
+*.md
+*.log
+Dockerfile
+.dockerignore

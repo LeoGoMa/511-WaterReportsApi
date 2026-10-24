@@ -13,6 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: [Report, User],
   synchronize: false,
   migrations: ['dist/db/migrations/[0-9]*-*.js'],
+  migrationsRun: true,
 };
 
 const dataSource = new DataSource(dataSourceOptions);

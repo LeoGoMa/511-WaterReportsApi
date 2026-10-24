@@ -25,6 +25,12 @@ export class Report {
   @Column({ type: 'boolean', default: false })
   isResolved!: boolean;
 
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  photoUrl!: string | null;
+
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  repairPhotoUrl!: string | null;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
 }

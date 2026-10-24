@@ -11,13 +11,14 @@ export class ReportsService {
     private reportRepository: Repository<Report>,
   ) {}
 
-  async create(dto: CreateReportDto): Promise<Report> {
+  async create(dto: CreateReportDto, photoUrl: string): Promise<Report> {
     const report = this.reportRepository.create({
       address: dto.address,
       description: dto.description,
       severity: dto.severity,
       reporterPhone: dto.reporterPhone,
       isResolved: false,
+      photoUrl,
     });
     return this.reportRepository.save(report);
   }

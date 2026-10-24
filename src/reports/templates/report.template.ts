@@ -22,7 +22,10 @@ function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;');
 }
 
-export function generateReportTemplate(dto: CreateReportDto): string {
+export function generateReportTemplate(
+  dto: CreateReportDto,
+  photoUrl: string,
+): string {
   const color = SEVERITY_COLOR[dto.severity];
   const label = SEVERITY_LABEL[dto.severity];
 
@@ -65,6 +68,8 @@ export function generateReportTemplate(dto: CreateReportDto): string {
               <td style="padding:10px 12px;border:1px solid #e0e0e0;">${escapeHtml(dto.reporterPhone)}</td>
             </tr>
           </table>
+          <p style="margin:24px 0 8px;font-size:14px;font-weight:bold;">Foto de la fuga</p>
+          <img src="${escapeHtml(photoUrl)}" alt="Foto de la fuga reportada" width="552" style="display:block;width:100%;max-width:552px;height:auto;border-radius:6px;border:1px solid #e0e0e0;" />
         </td>
       </tr>
       <tr>

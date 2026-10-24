@@ -1,0 +1,22 @@
+meta {
+  name: 07 - Reporte Sin Foto (400)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/reports
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  address: Calle Hidalgo 245, Col. Centro
+  description: Fuga en la banqueta, brota agua constante
+  severity: high
+  reporterPhone: 4771234567
+}
+
+assert {
+  res.status: eq 400
+}
