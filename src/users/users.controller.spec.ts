@@ -19,14 +19,7 @@ describe('UsersController', () => {
   });
 
   it('lista los usuarios que regresa el servicio', async () => {
-    const users = [
-      {
-        id: 1,
-        name: 'Ana',
-        email: 'ana@mail.com',
-        isNotificationEnabled: true,
-      },
-    ];
+    const users = [{ id: 1, name: 'Ana', isNotificationEnabled: true }];
     usersService.findAll.mockResolvedValue(users);
 
     await expect(controller.findAll()).resolves.toEqual(users);

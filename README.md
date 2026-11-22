@@ -88,7 +88,7 @@ Responde `201` con el reporte guardado y `notified`, que indica si el correo sal
 | Metodo | Ruta     | Descripcion                                                     |
 | ------ | -------- | --------------------------------------------------------------- |
 | `GET`  | `/`      | Estado de la API: `{ "api": "AguaFix", "version": "1.0.0", "status": "ok" }` |
-| `GET`  | `/users` | Lista los usuarios (`id`, `name`, `email`, `isNotificationEnabled`), nunca `password` |
+| `GET`  | `/users` | Lista los usuarios (`id`, `name`, `isNotificationEnabled`); nunca `email` ni `password` |
 
 ### AuthController
 

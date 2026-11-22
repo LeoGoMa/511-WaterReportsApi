@@ -27,14 +27,10 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
+  // Endpoint publico sin sesion: ni la contrasena ni el correo salen en la lista.
   async findAll(): Promise<User[]> {
     return this.userRepository.find({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        isNotificationEnabled: true,
-      },
+      select: { id: true, name: true, isNotificationEnabled: true },
       order: { id: 'ASC' },
     });
   }
