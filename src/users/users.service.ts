@@ -27,6 +27,18 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        isNotificationEnabled: true,
+      },
+      order: { id: 'ASC' },
+    });
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOneBy({ email });
   }

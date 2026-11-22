@@ -5,8 +5,10 @@ el ciudadano adjunta una foto de la fuga; la foto se sube a un bucket de S3, el 
 guarda en PostgreSQL y se envia un correo de aviso a la cuadrilla de mantenimiento con los
 datos y la foto de la fuga.
 
-La API se distribuye como imagen de Docker que GitHub Actions publica en Docker Hub en cada
-push a `main`.
+La API se distribuye como imagen de Docker. En cada push a `main`, GitHub Actions publica la
+imagen en Docker Hub y la despliega en una EC2 de AWS por SSH. La infraestructura (EC2, bucket,
+rol IAM, dominio de No-IP) se crea con Terraform en el repositorio
+[511-WaterReportsInfra](https://github.com/LeoGoMa/511-WaterReportsInfra).
 
 ## Stack
 
@@ -17,7 +19,8 @@ push a `main`.
 - Correo con `nodemailer`
 - Validacion de entrada con DTOs y `class-validator`
 - Fotos en Amazon S3 con `@aws-sdk/client-s3` (`StorageModule`)
-- Docker (`node:22-alpine`) + GitHub Actions para publicar la imagen
+- Docker (`node:22-alpine`) + GitHub Actions para publicar la imagen y desplegarla en EC2
+- CORS habilitado para que el front la consuma desde el navegador
 
 ## Entidades
 
@@ -79,6 +82,13 @@ Responde `201` con el reporte guardado y `notified`, que indica si el correo sal
   "notified": true
 }
 ```
+
+### AppController y UsersController
+
+| Metodo | Ruta     | Descripcion                                                     |
+| ------ | -------- | --------------------------------------------------------------- |
+| `GET`  | `/`      | Estado de la API: `{ "api": "AguaFix", "version": "1.0.0", "status": "ok" }` |
+| `GET`  | `/users` | Lista los usuarios (`id`, `name`, `email`, `isNotificationEnabled`), nunca `password` |
 
 ### AuthController
 
@@ -148,6 +158,9 @@ DOCKER_USER=tu_usuario_de_docker_hub
 ```
 
 - `MAILER_TOKEN` es una *App Password* de Gmail, no la contrasena normal de la cuenta.
+- Las llaves de AWS solo se usan en local. El SDK las toma del entorno; si no estan, usa el
+  perfil de la CLI de AWS. En la EC2 no hay llaves: la API sube las fotos con el rol IAM de la
+  instancia.
 - `AWS_SESSION_TOKEN` solo se llena con credenciales temporales (AWS Academy / Learner Lab).
 - El bucket debe permitir lectura publica de `reports/*` para que la foto se vea en el correo.
 - `DOCKER_USER` lo usa `compose.yaml` para saber que imagen descargar de Docker Hub.
@@ -191,16 +204,20 @@ Incluidas:
   `node dist/main`.
 - `.dockerignore`: deja fuera `.env`, `compose.yaml`, `node_modules`, `dist` y `.git`, entre
   otros. La imagen no lleva credenciales; se le pasan como variables de entorno al correrla.
-- `.github/workflows/docker-publish.yml`: en cada push a `main` hace login en Docker Hub,
-  construye la imagen y la publica con el tag `latest`.
+- `.github/workflows/docker-publish.yml`: en cada push a `main` corre dos jobs:
+  1. `docker`: login en Docker Hub, construye la imagen y la publica con el tag `latest`.
+  2. `deploy`: entra por SSH a la EC2 y ejecuta `docker compose pull` y `docker compose up -d`
+     en `~/aguafix`. Nadie entra al servidor a actualizar a mano.
 
-El workflow lee el usuario y el token de Docker Hub de los secrets del repositorio
+El workflow lee las credenciales de los secrets del repositorio
 (`Settings > Secrets and variables > Actions`):
 
-| Secret            | Valor                                         |
-| ----------------- | --------------------------------------------- |
-| `DOCKER_USER`     | Usuario de Docker Hub                         |
-| `DOCKER_PASSWORD` | Access token de Docker Hub (Read & Write)     |
+| Secret            | Valor                                              |
+| ----------------- | -------------------------------------------------- |
+| `DOCKER_USER`     | Usuario de Docker Hub                              |
+| `DOCKER_PASSWORD` | Access token de Docker Hub (Read & Write)          |
+| `EC2_HOST`        | Hostname de No-IP del servidor (o su IP publica)   |
+| `EC2_SSH_KEY`     | Llave privada SSH cuya publica registra Terraform  |
 
 ## Coleccion de Bruno
 

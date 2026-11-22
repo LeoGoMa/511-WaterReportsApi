@@ -1,4 +1,4 @@
-name: Publicar imagen en Docker Hub
+name: Publicar y desplegar en EC2
 
 on:
   push:
@@ -26,3 +26,20 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USER }}/water-reports-api:latest
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Actualizar la API en la EC2
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+            cd ~/aguafix
+            docker compose pull
+            docker compose up -d
+            docker image prune -f

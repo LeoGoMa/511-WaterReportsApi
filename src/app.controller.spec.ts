@@ -15,8 +15,12 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('regresa el estado de la API', () => {
+      expect(appController.getStatus()).toEqual({
+        api: 'AguaFix',
+        version: '1.0.0',
+        status: 'ok',
+      });
     });
   });
 });

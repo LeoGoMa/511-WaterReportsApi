@@ -6,14 +6,8 @@ import { envs } from '../config/envs';
 
 @Injectable()
 export class StorageService {
-  private client = new S3Client({
-    region: envs.AWS_REGION,
-    credentials: {
-      accessKeyId: envs.AWS_ACCESS_KEY_ID,
-      secretAccessKey: envs.AWS_SECRET_ACCESS_KEY,
-      sessionToken: envs.AWS_SESSION_TOKEN,
-    },
-  });
+  // Sin credenciales explicitas: en local el SDK lee AWS_ACCESS_KEY_ID del .env y en la EC2 usa su rol IAM.
+  private client = new S3Client({ region: envs.AWS_REGION });
 
   async uploadFile(file: Express.Multer.File, folder: string): Promise<string> {
     const prefix = folder.replace(/^\/+|\/+$/g, '');

@@ -20,7 +20,7 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect({ api: 'AguaFix', version: '1.0.0', status: 'ok' });
   });
 
   afterEach(async () => {
