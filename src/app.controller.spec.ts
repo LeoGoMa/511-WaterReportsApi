@@ -18,7 +18,7 @@ describe('AppController', () => {
     it('regresa el estado de la API', () => {
       expect(appController.getStatus()).toEqual({
         api: 'AguaFix',
-        version: '1.0.0',
+        version: '1.2.0',
         status: 'ok',
       });
     });
